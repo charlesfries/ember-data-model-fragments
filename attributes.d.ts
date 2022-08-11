@@ -1,15 +1,16 @@
 import Model from '@ember-data/model';
 import EmberArray from '@ember/array';
 import ComputedProperty from '@ember/object/computed';
+import Fragment from 'ember-data-model-fragments/fragment';
 import FragmentRegistry from 'ember-data-model-fragments/types/registries/fragment';
 import FragmentAttributesRegistry from 'ember-data-model-fragments/types/registries/fragment-attributes';
 // eslint-disable-next-line ember/use-ember-data-rfc-395-imports
 import TransformRegistry from 'ember-data/types/registries/transform';
 
-interface FragmentArray<T extends keyof FragmentRegistry> extends EmberArray<T> {
-  addFragment(fragment: FragmentRegistry[T]): FragmentRegistry[T];
-  removeFragment(fragment: FragmentRegistry[T]): FragmentRegistry[T];
-  createFragment(attributes: FragmentAttributesRegistry[T]): FragmentRegistry[T];
+interface FragmentArray<T extends Fragment> extends EmberArray<T> {
+  addFragment(fragment: T): T;
+  removeFragment(fragment: T): T;
+  createFragment(attributes?: Record<string, unknown>): T;
 }
 
 interface FragmentOptions<T extends keyof FragmentRegistry> {
@@ -22,14 +23,14 @@ type TransformType<T extends keyof TransformRegistry> = ReturnType<
   TransformRegistry[T]['deserialize']
 >;
 
-export function fragment<T extends keyof FragmentRegistry>(
-  type: T,
-  options?: FragmentOptions<T>,
-): ComputedProperty<FragmentRegistry[T]>;
-export function fragmentArray<T extends keyof FragmentRegistry>(
-  type: T,
-  options?: FragmentOptions<T>,
-): ComputedProperty<FragmentArray<T>>;
+export function fragment<K extends keyof FragmentRegistry>(
+  type: K,
+  options?: FragmentOptions<string | number>,
+): ComputedProperty<FragmentRegistry[K]>;
+export function fragmentArray<K extends keyof FragmentRegistry>(
+  type: K,
+  options?: FragmentOptions<string | number>,
+): ComputedProperty<FragmentArray<FragmentRegistry[K]>>;
 export function array<T extends keyof TransformRegistry>(): ComputedProperty<TransformRegistry[T]>;
 
 export function fragmentOwner(): ComputedProperty<Model>;

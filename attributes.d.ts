@@ -10,7 +10,7 @@ import TransformRegistry from 'ember-data/types/registries/transform';
 interface FragmentArray<T extends Fragment> extends EmberArray<T> {
   addFragment(fragment: T): T;
   removeFragment(fragment: T): T;
-  createFragment(attributes?: Record<string, unknown>): T;
+  createFragment(attributes?: Partial<T>): T;
 }
 
 interface FragmentOptions<K extends keyof FragmentRegistry> {

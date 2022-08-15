@@ -3,7 +3,6 @@ import EmberArray from '@ember/array';
 import ComputedProperty from '@ember/object/computed';
 import Fragment from 'ember-data-model-fragments/fragment';
 import FragmentRegistry from 'ember-data-model-fragments/types/registries/fragment';
-import FragmentAttributesRegistry from 'ember-data-model-fragments/types/registries/fragment-attributes';
 // eslint-disable-next-line ember/use-ember-data-rfc-395-imports
 import TransformRegistry from 'ember-data/types/registries/transform';
 
@@ -15,8 +14,8 @@ interface FragmentArray<T extends Fragment> extends EmberArray<T> {
 
 interface FragmentOptions<K extends keyof FragmentRegistry> {
   polymorphic?: boolean;
-  typeKey?: string | ((data: FragmentAttributesRegistry[K], owner: Model) => string);
-  defaultValue?: () => FragmentAttributesRegistry[K];
+  typeKey?: string | ((data: FragmentRegistry[K], owner: Model) => string);
+  defaultValue?: () => Partial<FragmentRegistry[K]>;
 }
 
 type TransformType<K extends keyof TransformRegistry> = ReturnType<

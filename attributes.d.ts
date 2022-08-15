@@ -15,7 +15,7 @@ interface FragmentArray<T extends Fragment> extends EmberArray<T> {
 interface FragmentOptions<K extends keyof FragmentRegistry> {
   polymorphic?: boolean;
   typeKey?: string | ((data: FragmentRegistry[K], owner: Model) => string);
-  defaultValue?: () => Partial<FragmentRegistry[K]>;
+  defaultValue?: Partial<FragmentRegistry[K]> | (() => Partial<FragmentRegistry[K]>);
 }
 
 type TransformType<K extends keyof TransformRegistry> = ReturnType<

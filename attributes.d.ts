@@ -17,6 +17,9 @@ interface FragmentOptions<K extends keyof FragmentRegistry> {
   typeKey?: string | ((data: FragmentRegistry[K], owner: Model) => string);
   defaultValue?: Partial<FragmentRegistry[K]> | (() => Partial<FragmentRegistry[K]>);
 }
+interface ArrayOptions<T extends keyof TransformRegistry> {
+  defaultValue: TransformRegistry[T][] | (() => TransformRegistry[T][]);
+}
 
 type TransformType<K extends keyof TransformRegistry> = ReturnType<
   TransformRegistry[K]['deserialize']
@@ -30,6 +33,6 @@ export function fragmentArray<K extends keyof FragmentRegistry>(
   type: K,
   options?: FragmentOptions<K>,
 ): ComputedProperty<FragmentArray<FragmentRegistry[K]>>;
-export function array<T extends keyof TransformRegistry>(): ComputedProperty<TransformRegistry[T]>;
+export function array<T extends keyof TransformRegistry>(type?: T, options?: ArrayOptions<T>): ComputedProperty<TransformRegistry[T]>;
 
 export function fragmentOwner(): ComputedProperty<Model>;
